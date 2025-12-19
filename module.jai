@@ -10,9 +10,9 @@ operator *[] :: (ea: *Enum_Array($E, $V), index: E) -> *V {
 
 for_expansion :: (ea: *Enum_Array($E, $V), body: Code, flags: For_Flags) #expand {
     values := enum_values_as_enum(E);
-    for *=cast(bool)(flags & .POINTER), <=cast(bool)(flags & .REVERSE)  index: values {
+    for <=cast(bool)(flags & .REVERSE)  index: values {
         idx       := get_enum_value(*index, xx E);
-        `it       := ea.backing_array[idx];
+        `it       := #ifx flags & .POINTER then *ea.backing_array[idx] else ea.backing_array[idx];
         `it_index := index;
 
         #insert body;
